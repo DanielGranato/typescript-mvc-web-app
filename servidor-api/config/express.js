@@ -1,14 +1,11 @@
-/* Código simplório, apenas para fornecer o serviço para a aplicação */
+import express from "express";
+import routes from "../app/routes/index.js";
 
-var express = require('express')
-    ,app = express()
-    ,routes = require('../app/routes')
-    ,path =  require('path')
-    ,bodyParser = require('body-parser');
+const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -16,4 +13,4 @@ app.use(function(req, res, next) {
 
 routes(app);
 
-module.exports = app;
+export default app;

@@ -1,9 +1,6 @@
-/* Código simplório, apenas para fornecer o serviço para a aplicação */
+import api from "../api/index.js";
 
-var api = require('../api');
-
-module.exports  = function(app) {
-        
-    app.route('/dados')
-        .get(api.dados);          
-};
+export default function (app) {
+  app.route("/dados")
+    .get(api.dados);
+}

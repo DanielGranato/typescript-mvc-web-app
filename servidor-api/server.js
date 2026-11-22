@@ -1,7 +1,8 @@
-var http = require('http')
-    ,app = require('./config/express');
+import http from "http";
+import app from "./config/express.js";
 
-http.createServer(app).listen(8080, function() {
-    console.log('Servidor escutando na porta: ' + this.address().port);
+const server = http.createServer(app);
+
+server.listen(8080, () => {
+  console.log(`Servidor escutando na porta: ${server.address().port}`);
 });
-

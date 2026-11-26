@@ -1,4 +1,5 @@
-import { logarTempoDeExecucao } from '../decorators/logar-tempo-de-execucao.js';
+import { domInjector } from '../decorators/dom-injector.js';
+import { logarTempoDeExecucao }from '../decorators/logar-tempo-de-execucao.js';
 import { DiasDaSemana } from '../enums/dias-da-semana.js';
 import { Negociacao } from '../models/negociacao.js';
 import { Negociacoes } from '../models/negociacoes.js';
@@ -6,17 +7,17 @@ import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 
 export class NegociacaoController {
-    private inputData: HTMLInputElement;
-    private inputQuantidade: HTMLInputElement;
-    private inputValor: HTMLInputElement;
+    @domInjector('#data')
+    private accessor inputData: HTMLInputElement;
+    @domInjector('#quantidade')
+    private accessor inputQuantidade: HTMLInputElement;
+    @domInjector('#valor')
+    private accessor inputValor: HTMLInputElement;
     private negociacoes = new Negociacoes();
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
 
     constructor() {
-        this.inputData = document.querySelector('#data');
-        this.inputQuantidade = document.querySelector('#quantidade');
-        this.inputValor = document.querySelector('#valor');
         this.negociacoesView.update(this.negociacoes);
     }
 

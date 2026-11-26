@@ -32,6 +32,18 @@ var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, 
     if (target) Object.defineProperty(target, contextIn.name, descriptor);
     done = true;
 };
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+import { domInjector } from '../decorators/dom-injector.js';
 import { logarTempoDeExecucao } from '../decorators/logar-tempo-de-execucao.js';
 import { DiasDaSemana } from '../enums/dias-da-semana.js';
 import { Negociacao } from '../models/negociacao.js';
@@ -39,18 +51,32 @@ import { Negociacoes } from '../models/negociacoes.js';
 import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 let NegociacaoController = (() => {
-    var _a;
+    var _a, _NegociacaoController_inputData_accessor_storage, _NegociacaoController_inputQuantidade_accessor_storage, _NegociacaoController_inputValor_accessor_storage;
     let _instanceExtraInitializers = [];
+    let _inputData_decorators;
+    let _inputData_initializers = [];
+    let _inputData_extraInitializers = [];
+    let _inputQuantidade_decorators;
+    let _inputQuantidade_initializers = [];
+    let _inputQuantidade_extraInitializers = [];
+    let _inputValor_decorators;
+    let _inputValor_initializers = [];
+    let _inputValor_extraInitializers = [];
     let _adiciona_decorators;
     return _a = class NegociacaoController {
+            get inputData() { return __classPrivateFieldGet(this, _NegociacaoController_inputData_accessor_storage, "f"); }
+            set inputData(value) { __classPrivateFieldSet(this, _NegociacaoController_inputData_accessor_storage, value, "f"); }
+            get inputQuantidade() { return __classPrivateFieldGet(this, _NegociacaoController_inputQuantidade_accessor_storage, "f"); }
+            set inputQuantidade(value) { __classPrivateFieldSet(this, _NegociacaoController_inputQuantidade_accessor_storage, value, "f"); }
+            get inputValor() { return __classPrivateFieldGet(this, _NegociacaoController_inputValor_accessor_storage, "f"); }
+            set inputValor(value) { __classPrivateFieldSet(this, _NegociacaoController_inputValor_accessor_storage, value, "f"); }
             constructor() {
-                this.inputData = __runInitializers(this, _instanceExtraInitializers);
-                this.negociacoes = new Negociacoes();
+                _NegociacaoController_inputData_accessor_storage.set(this, (__runInitializers(this, _instanceExtraInitializers), __runInitializers(this, _inputData_initializers, void 0)));
+                _NegociacaoController_inputQuantidade_accessor_storage.set(this, (__runInitializers(this, _inputData_extraInitializers), __runInitializers(this, _inputQuantidade_initializers, void 0)));
+                _NegociacaoController_inputValor_accessor_storage.set(this, (__runInitializers(this, _inputQuantidade_extraInitializers), __runInitializers(this, _inputValor_initializers, void 0)));
+                this.negociacoes = (__runInitializers(this, _inputValor_extraInitializers), new Negociacoes());
                 this.negociacoesView = new NegociacoesView('#negociacoesView');
                 this.mensagemView = new MensagemView('#mensagemView');
-                this.inputData = document.querySelector('#data');
-                this.inputQuantidade = document.querySelector('#quantidade');
-                this.inputValor = document.querySelector('#valor');
                 this.negociacoesView.update(this.negociacoes);
             }
             adiciona() {
@@ -105,9 +131,18 @@ let NegociacaoController = (() => {
                 this.inputData.focus();
             }
         },
+        _NegociacaoController_inputData_accessor_storage = new WeakMap(),
+        _NegociacaoController_inputQuantidade_accessor_storage = new WeakMap(),
+        _NegociacaoController_inputValor_accessor_storage = new WeakMap(),
         (() => {
             const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
+            _inputData_decorators = [domInjector('#data')];
+            _inputQuantidade_decorators = [domInjector('#quantidade')];
+            _inputValor_decorators = [domInjector('#valor')];
             _adiciona_decorators = [logarTempoDeExecucao()];
+            __esDecorate(_a, null, _inputData_decorators, { kind: "accessor", name: "inputData", static: false, private: false, access: { has: obj => "inputData" in obj, get: obj => obj.inputData, set: (obj, value) => { obj.inputData = value; } }, metadata: _metadata }, _inputData_initializers, _inputData_extraInitializers);
+            __esDecorate(_a, null, _inputQuantidade_decorators, { kind: "accessor", name: "inputQuantidade", static: false, private: false, access: { has: obj => "inputQuantidade" in obj, get: obj => obj.inputQuantidade, set: (obj, value) => { obj.inputQuantidade = value; } }, metadata: _metadata }, _inputQuantidade_initializers, _inputQuantidade_extraInitializers);
+            __esDecorate(_a, null, _inputValor_decorators, { kind: "accessor", name: "inputValor", static: false, private: false, access: { has: obj => "inputValor" in obj, get: obj => obj.inputValor, set: (obj, value) => { obj.inputValor = value; } }, metadata: _metadata }, _inputValor_initializers, _inputValor_extraInitializers);
             __esDecorate(_a, null, _adiciona_decorators, { kind: "method", name: "adiciona", static: false, private: false, access: { has: obj => "adiciona" in obj, get: obj => obj.adiciona }, metadata: _metadata }, null, _instanceExtraInitializers);
             if (_metadata) Object.defineProperty(_a, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
         })(),

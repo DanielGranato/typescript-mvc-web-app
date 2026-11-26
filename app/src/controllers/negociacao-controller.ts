@@ -6,6 +6,12 @@ import { Negociacoes } from '../models/negociacoes.js';
 import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 
+// Formato de cada item retornado pela API
+interface DadoDaApi {
+    montante: number;
+    vezes: number;
+}
+
 export class NegociacaoController {
     @domInjector('#data')
     private accessor inputData: HTMLInputElement;
@@ -37,6 +43,26 @@ export class NegociacaoController {
         this.negociacoesView.update(this.negociacoes);
         this.mensagemView.update('Negociação adicionada com sucesso');
         this.limparFormulario();
+    }
+
+    async importaDados(): Promise<void> {
+        try {
+            const resposta = await fetch('http://localhost:8080/dados');
+            // O fetch não lança erro em respostas como 404 ou 500, por isso a verificação
+            if (!resposta.ok) {
+                throw new Error(`A API respondeu com o status ${resposta.status}`);
+            }
+            const dados: DadoDaApi[] = await resposta.json();
+            // A API não envia data, então as negociações importadas recebem a data de hoje
+            for (const { vezes, montante } of dados) {
+                this.negociacoes.adiciona(new Negociacao(new Date(), vezes, montante));
+            }
+            this.negociacoesView.update(this.negociacoes);
+            this.mensagemView.update('Negociações importadas com sucesso');
+        } catch (erro) {
+            console.error(erro);
+            this.mensagemView.update('Não foi possível importar as negociações');
+        }
     }
 
     // Retorna a mensagem de erro do primeiro campo inválido, ou null se tudo estiver certo

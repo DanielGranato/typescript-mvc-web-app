@@ -32,6 +32,15 @@ var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, 
     if (target) Object.defineProperty(target, contextIn.name, descriptor);
     done = true;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -94,6 +103,28 @@ let NegociacaoController = (() => {
                 this.negociacoesView.update(this.negociacoes);
                 this.mensagemView.update('Negociação adicionada com sucesso');
                 this.limparFormulario();
+            }
+            importaDados() {
+                return __awaiter(this, void 0, void 0, function* () {
+                    try {
+                        const resposta = yield fetch('http://localhost:8080/dados');
+                        // O fetch não lança erro em respostas como 404 ou 500, por isso a verificação
+                        if (!resposta.ok) {
+                            throw new Error(`A API respondeu com o status ${resposta.status}`);
+                        }
+                        const dados = yield resposta.json();
+                        // A API não envia data, então as negociações importadas recebem a data de hoje
+                        for (const { vezes, montante } of dados) {
+                            this.negociacoes.adiciona(new Negociacao(new Date(), vezes, montante));
+                        }
+                        this.negociacoesView.update(this.negociacoes);
+                        this.mensagemView.update('Negociações importadas com sucesso');
+                    }
+                    catch (erro) {
+                        console.error(erro);
+                        this.mensagemView.update('Não foi possível importar as negociações');
+                    }
+                });
             }
             // Retorna a mensagem de erro do primeiro campo inválido, ou null se tudo estiver certo
             validaCampos() {

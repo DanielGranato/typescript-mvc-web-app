@@ -3,14 +3,9 @@ import { logarTempoDeExecucao }from '../decorators/logar-tempo-de-execucao.js';
 import { DiasDaSemana } from '../enums/dias-da-semana.js';
 import { Negociacao } from '../models/negociacao.js';
 import { Negociacoes } from '../models/negociacoes.js';
-import { MensagemView } from '../views/mensagem-view.js';
+import { NegociacoesService } from '../services/negociacoes-service.js';
+import { MensagemView }from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
-
-// Formato de cada item retornado pela API
-interface DadoDaApi {
-    montante: number;
-    vezes: number;
-}
 
 export class NegociacaoController {
     @domInjector('#data')
@@ -22,6 +17,7 @@ export class NegociacaoController {
     private negociacoes = new Negociacoes();
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
+    private negociacoesService = new NegociacoesService();
 
     constructor() {
         this.negociacoesView.update(this.negociacoes);
@@ -47,15 +43,9 @@ export class NegociacaoController {
 
     async importaDados(): Promise<void> {
         try {
-            const resposta = await fetch('http://localhost:8080/dados');
-            // O fetch não lança erro em respostas como 404 ou 500, por isso a verificação
-            if (!resposta.ok) {
-                throw new Error(`A API respondeu com o status ${resposta.status}`);
-            }
-            const dados: DadoDaApi[] = await resposta.json();
-            // A API não envia data, então as negociações importadas recebem a data de hoje
-            for (const { vezes, montante } of dados) {
-                this.negociacoes.adiciona(new Negociacao(new Date(), vezes, montante));
+            const importadas = await this.negociacoesService.obterNegociacoes();
+            for (const negociacao of importadas) {
+                this.negociacoes.adiciona(negociacao);
             }
             this.negociacoesView.update(this.negociacoes);
             this.mensagemView.update('Negociações importadas com sucesso');

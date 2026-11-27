@@ -110,7 +110,13 @@ let NegociacaoController = (() => {
                 return __awaiter(this, void 0, void 0, function* () {
                     try {
                         const importadas = yield this.negociacoesService.obterNegociacoes();
-                        for (const negociacao of importadas) {
+                        // Filtra antes de adicionar, para preservar itens repetidos vindos da própria API
+                        const novas = importadas.filter(negociacao => !this.negociacoes.contem(negociacao));
+                        if (novas.length === 0) {
+                            this.mensagemView.update('Não há negociações novas para importar');
+                            return;
+                        }
+                        for (const negociacao of novas) {
                             this.negociacoes.adiciona(negociacao);
                         }
                         this.negociacoesView.update(this.negociacoes);

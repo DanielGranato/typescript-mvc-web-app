@@ -7,6 +7,10 @@ export class Negociacoes {
         this.negociacoes.push(negociacao);
     }
 
+    contem(negociacao: Negociacao): boolean {
+        return this.negociacoes.some(existente => existente.ehIgual(negociacao));
+    }
+
     lista(): readonly Negociacao[] {
         return this.negociacoes;
     }

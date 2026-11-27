@@ -5,6 +5,9 @@ export class Negociacoes {
     adiciona(negociacao) {
         this.negociacoes.push(negociacao);
     }
+    contem(negociacao) {
+        return this.negociacoes.some(existente => existente.ehIgual(negociacao));
+    }
     lista() {
         return this.negociacoes;
     }
